@@ -1,5 +1,5 @@
 from flask import Flask
-from server.models import db
+from src.models import db
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 
@@ -9,4 +9,4 @@ db.init_app(app)
 with app.app_context():
 	db.create_all()
 
-import server.urls
+import src.urls
