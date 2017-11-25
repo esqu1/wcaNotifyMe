@@ -4,10 +4,35 @@
 	<title>WCA NotifyMe</title>
 </head>
 <body>
-	<form action="/submitted" method="POST">
-		Email <input type="text" name="email">
-		Competition Name <input type="text" name="comp_name">
+
+	<div class="message"></div>
+
+	<form id="submitForm">
+		Email <input type="text" name="email" id="email">
+		Competition Name <input type="text" name="comp_name" id="compname">
 		<input type="submit" name="submit">
 	</form>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$("#submitForm").submit(function (e) {
+			$.ajax({
+				type: "POST",
+				url: '/submitted', 
+				data: {
+					email: $('#email').val(),
+					comp_name: $('#compname').val()
+				},
+				success: function (data) {
+					if ('error' in data) {
+						$('.message').html(data.error);
+					} else {
+						$('.message').html('Success! You will be notified when registration opens.');
+					}
+				}
+			});
+			e.preventDefault();
+		});
+	</script>
 </body>
 </html>

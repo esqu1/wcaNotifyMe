@@ -8,3 +8,5 @@ with app.app_context():
     db.create_all()
 
 import src.urls
+import src.db_populate
+from src.db_populate import sched

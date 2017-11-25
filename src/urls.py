@@ -1,6 +1,6 @@
 from src import app, db
 from flask import request, jsonify, render_template
-from models import Registration, Competition
+from .models import Registration, Competition
 import re
 
 
@@ -21,8 +21,8 @@ def submit():
                 if len(result) <= 0:
                     return jsonify({'error': "Invalid competition name."})
                 else:
-                    reg = Registration(email = request.form['email'], 
-                                       comp = result[0])
+                    reg = Registration(email=request.form['email'],
+                                       comp=result[0])
                     db.session.add(reg)
                     db.session.commit()
                     return jsonify({'result': 'OK'})
@@ -31,10 +31,12 @@ def submit():
     else:
         return jsonify({'error': "GET method not supported."})
 
+
 def valid_email(email):
     if email == '':
         return False
-    return re.match('[a-zA-Z0-9-+_]+@[a-zA-Z0-9-+_]+\.[a-zA-Z0-9-+_]+', email) != None
+    return re.match('[a-zA-Z0-9-+_]+@[a-zA-Z0-9-+_]+\.[a-zA-Z0-9-+_]+', email) is not None
+
 
 def valid_comp(comp_name):
     return True

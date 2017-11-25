@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+
 class Registration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=False, nullable=False)
@@ -9,6 +10,7 @@ class Registration(db.Model):
 
     def __repr__(self):
         return '<Registration %r %r>' % (self.email, self.comp)
+
 
 class Competition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
