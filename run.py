@@ -1,4 +1,4 @@
-from src import app, db, sched
+from notifyme import app, db, sched
 
 if __name__ == '__main__':
     sched.start()

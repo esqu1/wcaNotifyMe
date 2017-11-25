@@ -1,4 +1,4 @@
-from src import app, db
+from notifyme import app, db
 from flask import request, jsonify, render_template
 from .models import Registration, Competition
 import re

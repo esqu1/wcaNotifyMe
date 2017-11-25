@@ -1,4 +1,4 @@
-from src import app, db
+from notifyme import app, db
 from .rssfetch import RSSParser
 from .models import Competition
 import datetime
