@@ -1,5 +1,5 @@
 from src import app, db
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from models import Registration, Competition
 import re
 
@@ -7,7 +7,7 @@ import re
 @app.route('/')
 def main():
     # return rendering of home page
-    return "Hello World"
+    return render_template('index.html')
 
 
 @app.route('/submitted', methods=['POST'])
@@ -23,7 +23,7 @@ def submit():
                 else:
                     reg = Registration(email = request.form['email'], 
                                        comp = result[0])
-                    db.session.add(result)
+                    db.session.add(reg)
                     db.session.commit()
                     return jsonify({'result': 'OK'})
         else:
@@ -37,4 +37,4 @@ def valid_email(email):
     return re.match('[a-zA-Z0-9-+_]+@[a-zA-Z0-9-+_]+\.[a-zA-Z0-9-+_]+', email) != None
 
 def valid_comp(comp_name):
-    pass
+    return True
