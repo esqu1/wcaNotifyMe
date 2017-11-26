@@ -22,8 +22,8 @@
           <input type="text" class="form-control" name="comp_name" id="compname" placeholder="Name of the competition you wish to be notified for">
         </div> -->
         <div class="form-group">
-          <label for="comp_name">Competition Name</label><br>
-          <select class="custom-select">
+          <label for="compname">Competition Name</label><br>
+          <select class="custom-select" id="compname">
             <option selected>Select a competition</option>
             {% if comps %}
             {% for comp in comps %}
