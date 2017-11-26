@@ -33,4 +33,4 @@ def submit():
 def valid_email(email):
     if email == '':
         return False
-    return re.match('[a-zA-Z0-9-+_]+@[a-zA-Z0-9-+_]+\.[a-zA-Z0-9-+_]+', email) is not None
+    return re.match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email) is not None
