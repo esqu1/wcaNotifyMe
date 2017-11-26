@@ -5,8 +5,6 @@ import datetime
 
 sched = BackgroundScheduler()
 
-# Should be run as a cronjob.
-
 
 def populate_db():
     r = RSSParser()
@@ -31,6 +29,5 @@ def populate_db():
                                             open_time=None)
                 db.session.add(new_event)
         db.session.commit()
-    print "success!"
 
 sched.add_job(populate_db, 'interval', id="populate_db", seconds=10)

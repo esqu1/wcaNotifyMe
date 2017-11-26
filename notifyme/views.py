@@ -6,7 +6,8 @@ import re
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    names = map(lambda x: x[0], db.session.query(Competition.name).all())
+    return render_template('index.html', comps=names)
 
 
 @app.route('/submitted', methods=['POST'])
