@@ -28,6 +28,12 @@ def populate_db():
                                             website=events[event][0],
                                             open_time=None)
                 db.session.add(new_event)
+                # create cronjob
+                sched.add_job(send_emails, 'cron', id="send to " + event, hour=1)
         db.session.commit()
+
+
+def send_emails():
+    pass
 
 sched.add_job(populate_db, 'interval', id="populate_db", seconds=10)

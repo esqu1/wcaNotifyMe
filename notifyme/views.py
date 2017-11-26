@@ -15,6 +15,8 @@ def submit():
     if request.method == 'POST':
         if valid_email(request.form['email']):
             comp_name = request.form['comp_name']
+            if comp_name == 'Select a competition':
+                return jsonify({'error': 'No competition selected.'})
             with app.app_context():
                 result = Competition.query.filter_by(name=comp_name).all()
                 if len(result) <= 0:
@@ -22,6 +24,7 @@ def submit():
                 else:
                     reg = Registration(email=request.form['email'],
                                        comp=result[0])
+                    # check for duplicates here
                     db.session.add(reg)
                     db.session.commit()
                     return jsonify({'result': 'OK'})
