@@ -2,32 +2,98 @@
 <html>
 <head>
 	<title>WCA NotifyMe</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<style>
+		h1 {
+			text-align: center;
+		}
+
+		html, body {
+	  		height: 100%;
+		}
+
+		.jumbotron.vertical-center {
+			background-color: white;
+		  	margin-bottom: 0;
+		}
+
+		.vertical-center {
+			min-height: 100%;
+			min-height: 100vh;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			-moz-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+
+			width: 100%;
+
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+		}
+
+		.container {
+			max-width: 500px;
+		}
+
+		.form-actions {
+		    margin: 0;
+		    background-color: transparent;
+		    text-align: center;
+		}
+	</style>
 </head>
 <body>
-
-	<div class="message"></div>
-
-	<form id="submitForm">
-		Email <input type="text" name="email" id="email">
-		Competition Name <input type="text" name="comp_name" id="compname">
-		<input type="submit" name="submit">
-	</form>
+ 	<div class="jumbotron vertical-center">
+		<div class="container">
+			<div id="alertContainer">
+			</div>
+			<h1>WCA NotifyMe</h1>
+			<div></div>
+			<form id="submitForm">
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" class="form-control" name="email" id="email" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label for="comp_name">Competition Name</label>
+					<input type="text" class="form-control" name="comp_name" id="compname" placeholder="Name of the competition you wish to be notified for">
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary" name="submit">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 	<script type="text/javascript">
+		var closeButtonStr = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		$('#message').hide();
 		$("#submitForm").submit(function (e) {
 			$.ajax({
 				type: "POST",
-				url: '/submitted', 
+				url: '/submitted',
 				data: {
 					email: $('#email').val(),
 					comp_name: $('#compname').val()
 				},
 				success: function (data) {
 					if ('error' in data) {
-						$('.message').html(data.error);
+						$('#alertContainer').html('<div role="alert" id="message" class="alert alert-danger alert-dismissible fade show">' + data.error + closeButtonStr + '</div>');
 					} else {
-						$('.message').html('Success! You will be notified when registration opens.');
+						$('#alertContainer').html('<div role="alert" id="message" class="alert alert-success alert-dismissible fade show">' + 'Success! You will be notified when registration opens.' + closeButtonStr + '</div>');
 					}
 				}
 			});
