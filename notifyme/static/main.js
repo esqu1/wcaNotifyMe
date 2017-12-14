@@ -15,7 +15,7 @@ $(document).ready(function () {
         } else {
           $('#alertContainer').html('<div role="alert" id="message" class="alert alert-success alert-dismissible fade show">' + 'Success! You will be notified when registration opens.' + closeButtonStr + '</div>');
         }
-      }
+      } 
     });
     e.preventDefault();
   });
