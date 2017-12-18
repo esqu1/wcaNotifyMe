@@ -2,7 +2,6 @@ from notifyme import app, db
 from .models import Competition, RSSParser
 from apscheduler.schedulers.background import BackgroundScheduler
 import datetime
-import logging
 
 sched = BackgroundScheduler()
 
@@ -38,4 +37,3 @@ def send_emails():
     pass
 
 sched.add_job(populate_db, 'interval', id="populate_db", seconds=10)
-logging.basicConfig(filename='log.txt', level=logging.INFO)
