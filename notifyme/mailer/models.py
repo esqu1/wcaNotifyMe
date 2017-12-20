@@ -15,3 +15,6 @@ def create_msg(comp_name, link, recipients):
                 Thank you for using WCA NotifyMe!<br><br>--<br>Brandon Lin
                """ % (comp_name, link)
     return msg
+
+def send_msg(msg):
+    mail.send(msg)

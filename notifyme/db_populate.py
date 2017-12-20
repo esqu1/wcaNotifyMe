@@ -1,7 +1,8 @@
 from notifyme import app, db
-from .models import Competition, RSSParser
+from .models import Competition, Registration, RSSParser
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.base import ConflictingIdError
+from mailer.models import create_msg, send_msg
 import datetime
 import logging
 logging.basicConfig()
@@ -29,15 +30,32 @@ def populate_db():
                                             website=events[event][0],
                                             open_time=None)
                 db.session.add(new_event)
-                # create cronjob
                 try:
-                    sched.add_job(send_emails, 'cron', id="send to " + event, hour=1)
+                    open_time = new_event.open_time
+                    if open_time is not None:
+                        dt_mod = dt - datetime.timedelta(minutes=10)
+                        sched.add_job(lambda: send_emails(event), 'cron',
+                                      id=event, year=dt_mod.year,
+                                      month=dt_mod.month,
+                                      day=dt_mod.day,
+                                      hour=dt_mod.hour,
+                                      minute=dt_mod.minute,
+                                      second=dt_mod.second)
                 except ConflictingIdError:
                     pass
         db.session.commit()
 
 
-def send_emails():
-    pass
+def send_emails(event):
+    with app.app_context():
+        comp_site = db.session.query(Competition.website).\
+                    filter(Competition.name == event).one()[0]
+        s = db.session.query(Registration).\
+            filter(Registration.comp_name == event).all()
+        for reg in s:
+            msg = create_msg(event, comp_site, [reg.email])
+            send_msg(msg)
+
+        # need to also pop off the competition from the database
 
 sched.add_job(populate_db, 'interval', id="populate_db", seconds=10)
