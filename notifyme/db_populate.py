@@ -48,14 +48,16 @@ def populate_db():
 
 def send_emails(event):
     with app.app_context():
-        comp_site = db.session.query(Competition.website).\
-                    filter(Competition.name == event).one()[0]
+        comp = db.session.query(Competition).\
+                    filter(Competition.name == event).one()
+        comp_site = comp.name
         s = db.session.query(Registration).\
             filter(Registration.comp_name == event).all()
         for reg in s:
             msg = create_msg(event, comp_site, [reg.email])
             send_msg(msg)
-
+        db.session.delete(comp)
+        db.session.commit()
         # need to also pop off the competition from the database
 
-sched.add_job(populate_db, 'interval', id="populate_db", seconds=10)
+sched.add_job(populate_db, 'interval', id="populate_db", minutes=1)

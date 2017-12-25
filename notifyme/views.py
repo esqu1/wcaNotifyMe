@@ -22,11 +22,11 @@ def submit():
                 if len(result) <= 0:
                     return jsonify({'error': "Invalid competition name."})
                 else:
-                    print result[0].name
                     s = db.session.query(Registration.email,
                                          Registration.comp_name).\
                         filter(Registration.email == request.form['email'],
-                               Registration.comp_name == result[0].name).count()
+                               Registration.comp_name == result[0].name).\
+                        count()
                     if s == 0:
                         reg = Registration(email=request.form['email'],
                                            comp=result[0])
