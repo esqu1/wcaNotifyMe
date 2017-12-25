@@ -43,6 +43,8 @@ def populate_db():
                                       second=dt_mod.second)
                 except ConflictingIdError:
                     pass
+                except OverflowError:
+                    pass
         db.session.commit()
 
 
